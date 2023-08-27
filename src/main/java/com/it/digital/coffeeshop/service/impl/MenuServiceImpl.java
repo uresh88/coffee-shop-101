@@ -94,7 +94,11 @@ public class MenuServiceImpl implements MenuService {
     }
 
     private MenuDetailsDto menuToMenuDetailDto(Menu menu) {
-        MenuDetailsDto menuDetailsDto = MenuDetailsDto.builder().name(menu.getName()).id(menu.getId()).menuItemIdSet(menu.getMenuMenuItemSet().stream().map(MenuMenuItem::getId).collect(Collectors.toSet())).build();
+        MenuDetailsDto menuDetailsDto = MenuDetailsDto.builder()
+                .name(menu.getName())
+                .id(menu.getId())
+                .menuItemIdSet(menu.getMenuMenuItemSet().stream().map(MenuMenuItem::getId).collect(Collectors.toSet()))
+                .build();
         return menuDetailsDto;
     }
 
