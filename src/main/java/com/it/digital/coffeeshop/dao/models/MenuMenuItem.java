@@ -5,26 +5,25 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @JsonSerialize
 @Setter
 @Getter
-@Table(name = "order_menu_item")
-public class OrderMenuItem {
-
+@Table(name = "menu_menu_item")
+public class MenuMenuItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
-    @ManyToOne(optional = false, cascade = {CascadeType.ALL})
-    @JoinColumn(name = "order_id")
-    Order order;
-
-    @ManyToOne(optional = false, cascade = {CascadeType.ALL})
+    private Boolean isValid;
+    @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "menu_item_id")
-    MenuItem menuItem;
+    private MenuItem menuItem;
 
-    @Column(nullable = false)
-    Integer itemCount;
+    @ManyToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "menu_id")
+    private Menu menu ;
+
 }

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @JsonSerialize
@@ -16,4 +17,13 @@ public class Menu {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private String name;
+
+    @OneToMany(mappedBy = "menu", cascade = {CascadeType.ALL})
+    private Set<MenuItem> menuItemSet;
+
+    @OneToMany(mappedBy = "menu", cascade = {CascadeType.ALL})
+    private Set<MenuMenuItem> menuMenuItemSet;
 }
+

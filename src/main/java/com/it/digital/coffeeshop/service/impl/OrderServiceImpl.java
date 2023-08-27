@@ -15,10 +15,7 @@ import com.it.digital.coffeeshop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,12 +34,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void placeOrder(Long userId, Map<Long, Integer> menuItemIdQuantityMap) throws NotFoundException {
-        List<MenuItem> menuItemList = this.menuItemRepository.findAllByIdIn(menuItemIdQuantityMap.keySet());
+        Set<MenuItem> menuItemList = this.menuItemRepository.findAllByIdIn(menuItemIdQuantityMap.keySet());
         Order order = this.saveOrderAndUpdateUser(userId, menuItemList, menuItemIdQuantityMap);
         saveOrderMenuItem(order, menuItemList, menuItemIdQuantityMap);
     }
 
-    private Order saveOrderAndUpdateUser(Long userId, List<MenuItem> menuItemList, Map<Long, Integer> menuItemIdQuantityMap) throws NotFoundException {
+    private Order saveOrderAndUpdateUser(Long userId, Set<MenuItem> menuItemList, Map<Long, Integer> menuItemIdQuantityMap) throws NotFoundException {
         Order order = new Order();
 
         Integer totalPoints = menuItemList.stream().map(item -> item.getPoint() * menuItemIdQuantityMap.get(item.getId())).reduce(0, Integer::sum);
@@ -64,7 +61,7 @@ public class OrderServiceImpl implements OrderService {
         return order1;
     }
 
-    private void saveOrderMenuItem(Order order, List<MenuItem> menuItemList, Map<Long, Integer> menuItemIdQuantityMap) throws NotFoundException {
+    private void saveOrderMenuItem(Order order, Set<MenuItem> menuItemList, Map<Long, Integer> menuItemIdQuantityMap) throws NotFoundException {
         for (Long menuItemId : menuItemIdQuantityMap.keySet()) {
             OrderMenuItem orderMenuItem = new OrderMenuItem();
             orderMenuItem.setItemCount(menuItemIdQuantityMap.get(menuItemId));

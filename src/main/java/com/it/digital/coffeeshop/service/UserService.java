@@ -20,4 +20,7 @@ public interface UserService {
     User getUserById(Long userId) throws NotFoundException;
 
     void updateUser(UserDetailsDto userDetailsDto) throws NotFoundException;
+
 }
+
+

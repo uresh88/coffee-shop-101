@@ -29,5 +29,7 @@ public class MenuItem {
     @OneToMany(mappedBy = "menuItem", cascade = {CascadeType.ALL})
     private Set<OrderMenuItem> orderMenuItemSet;
 
+    @OneToMany(mappedBy = "menuItem", cascade = {CascadeType.ALL})
+    private Set<MenuMenuItem> menuMenuItemSet;
 
 }
