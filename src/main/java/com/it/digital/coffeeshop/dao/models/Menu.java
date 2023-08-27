@@ -21,9 +21,6 @@ public class Menu {
     private String name;
 
     @OneToMany(mappedBy = "menu", cascade = {CascadeType.ALL})
-    private Set<MenuItem> menuItemSet;
-
-    @OneToMany(mappedBy = "menu", cascade = {CascadeType.ALL})
     private Set<MenuMenuItem> menuMenuItemSet;
 }
 

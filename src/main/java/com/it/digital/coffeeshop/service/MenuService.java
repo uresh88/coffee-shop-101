@@ -1,13 +1,14 @@
 package com.it.digital.coffeeshop.service;
 
+import com.it.digital.coffeeshop.exception.NotFoundException;
 import com.it.digital.coffeeshop.model.dto.MenuDetailsDto;
 
 public interface MenuService {
     void createNewMenu(MenuDetailsDto menuDetailsDto);
 
-    MenuDetailsDto getMenuById(Long menuId);
+    MenuDetailsDto getMenuDetailsDtoById(Long menuId) throws NotFoundException;
 
-    MenuDetailsDto updateMenu(MenuDetailsDto menuDetailsDto);
+    void updateMenu(MenuDetailsDto menuDetailsDto) throws NotFoundException;
 
-    void deleteMenu(Long menuId);
+    void deleteMenu(Long menuId) throws NotFoundException;
 }

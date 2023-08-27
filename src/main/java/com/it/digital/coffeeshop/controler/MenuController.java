@@ -1,5 +1,6 @@
 package com.it.digital.coffeeshop.controler;
 
+import com.it.digital.coffeeshop.exception.NotFoundException;
 import com.it.digital.coffeeshop.model.dto.MenuDetailsDto;
 import com.it.digital.coffeeshop.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,16 +21,16 @@ public class MenuController {
     }
 
     @GetMapping(value = "/{menuId}")
-    public ResponseEntity<MenuDetailsDto> getMenu(@PathVariable Long menuId) {
-        MenuDetailsDto menuDetailsDto1 = this.menuService.getMenuById(menuId);
+    public ResponseEntity<MenuDetailsDto> getMenu(@PathVariable Long menuId) throws NotFoundException {
+        MenuDetailsDto menuDetailsDto1 = this.menuService.getMenuDetailsDtoById(menuId);
         return ResponseEntity.ok().body(menuDetailsDto1);
 
     }
 
     @PostMapping
-    public ResponseEntity<MenuDetailsDto> updateMenu(@RequestBody MenuDetailsDto menuDetailsDto) {
-        MenuDetailsDto menuDetailsDto1 = this.menuService.updateMenu(menuDetailsDto);
-        return ResponseEntity.ok().body(menuDetailsDto1);
+    public ResponseEntity<MenuDetailsDto> updateMenu(@RequestBody MenuDetailsDto menuDetailsDto) throws NotFoundException {
+        this.menuService.updateMenu(menuDetailsDto);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping(value = "/{menuId}")
