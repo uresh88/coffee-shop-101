@@ -34,7 +34,7 @@ public class MenuController {
     }
 
     @DeleteMapping(value = "/{menuId}")
-    public ResponseEntity deleteMenu(@PathVariable Long menuId) {
+    public ResponseEntity deleteMenu(@PathVariable Long menuId) throws NotFoundException {
         this.menuService.deleteMenu(menuId);
         return ResponseEntity.ok().build();
 

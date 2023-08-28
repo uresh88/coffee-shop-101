@@ -16,4 +16,6 @@ public interface ShopService {
     void updateShopById(ShopDetailDto shopDetailDto) throws NotFoundException;
 
     List<ShopDetailDto> getAllInsideRadius(Long lon, Long lat, Long rad);
+
+    void registerMenuItem(Long shopId, Long menuId) throws NotFoundException;
 }

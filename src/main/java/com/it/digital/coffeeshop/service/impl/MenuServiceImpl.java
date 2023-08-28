@@ -48,7 +48,7 @@ public class MenuServiceImpl implements MenuService {
         return menuToMenuDetailDto(menu);
     }
 
-    private Menu getMenuById(Long menuId) throws NotFoundException {
+    public Menu getMenuById(Long menuId) throws NotFoundException {
         Optional<Menu> optionalMenu = this.menuRepository.findById(menuId);
         if (!optionalMenu.isPresent()) {
             throw new NotFoundException("Menu item not found");

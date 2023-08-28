@@ -1,6 +1,7 @@
 package com.it.digital.coffeeshop.controler;
 
 
+import com.it.digital.coffeeshop.exception.NotFoundException;
 import com.it.digital.coffeeshop.model.dto.ShopDetailDto;
 import com.it.digital.coffeeshop.service.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,5 +51,11 @@ public class ShopController {
             return ResponseEntity.notFound().build();
         }
         return new ResponseEntity<>(userDetailsDtoList, HttpStatus.OK);
+    }
+
+    @PostMapping( value="/{shopId}/reg/{menuId}")
+    public ResponseEntity RegisterMenuItem(@PathVariable Long shopId, @PathVariable Long menuId) throws NotFoundException {
+        this.shopService.registerMenuItem(shopId,menuId);
+        return ResponseEntity.ok().build();
     }
 }

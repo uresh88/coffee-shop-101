@@ -22,5 +22,9 @@ public class Menu {
 
     @OneToMany(mappedBy = "menu", cascade = {CascadeType.ALL})
     private Set<MenuMenuItem> menuMenuItemSet;
+
+    @OneToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "shop_id", referencedColumnName = "id")
+    private Shop shop;
 }
 

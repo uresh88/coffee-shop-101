@@ -22,4 +22,8 @@ public class Shop {
     @Column(name = "mobile_num")
     private String mobileNumber;
     private String address;
+
+    @OneToOne( cascade = {CascadeType.ALL})
+    @JoinColumn(name = "menu_id", referencedColumnName = "id")
+    private Menu menu;
 }

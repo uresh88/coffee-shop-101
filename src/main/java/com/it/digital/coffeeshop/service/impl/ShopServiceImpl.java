@@ -1,9 +1,11 @@
 package com.it.digital.coffeeshop.service.impl;
 
 import com.it.digital.coffeeshop.dao.ShopRepository;
+import com.it.digital.coffeeshop.dao.models.Menu;
 import com.it.digital.coffeeshop.dao.models.Shop;
 import com.it.digital.coffeeshop.exception.NotFoundException;
 import com.it.digital.coffeeshop.model.dto.ShopDetailDto;
+import com.it.digital.coffeeshop.service.MenuService;
 import com.it.digital.coffeeshop.service.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +18,9 @@ import java.util.stream.Collectors;
 public class ShopServiceImpl implements ShopService {
 
     @Autowired
-    ShopRepository shopRepository;
+    private ShopRepository shopRepository;
+    @Autowired
+    private MenuService menuService;
 
     @Override
     public void createShop(ShopDetailDto shopDetailDto) {
@@ -32,24 +36,24 @@ public class ShopServiceImpl implements ShopService {
         return shopDetailDtoList;
     }
 
-    @Override
-    public ShopDetailDto getShopByyId(Long shopId) throws NotFoundException {
+    private Shop getShopById(Long shopId) throws NotFoundException {
         Optional<Shop> optShop = this.shopRepository.findById(shopId);
         if (!optShop.isPresent()) {
             throw new NotFoundException("No matching shop");
         }
-        Shop shop = optShop.get();
+        return optShop.get();
+    }
+
+    @Override
+    public ShopDetailDto getShopByyId(Long shopId) throws NotFoundException {
+        Shop shop = this.getShopById(shopId);
         ShopDetailDto shopDetailDto = this.shopToShopDetailDto(shop);
         return shopDetailDto;
     }
 
     @Override
     public void updateShopById(ShopDetailDto shopDetailDto) throws NotFoundException {
-        Optional<Shop> optionalShop = this.shopRepository.findById(shopDetailDto.getId());
-        if (!optionalShop.isPresent()) {
-            throw new NotFoundException("Shop not found");
-        }
-        Shop shop = optionalShop.get();
+        Shop shop = this.getShopById(shopDetailDto.getId());
         shopDetailDtoToShop(shopDetailDto, shop);
         this.shopRepository.saveAndFlush(shop);
     }
@@ -59,6 +63,17 @@ public class ShopServiceImpl implements ShopService {
         List<Shop> shopList = this.shopRepository.findAllByLonBeforeAndLatBefore(lon + rad, lat + rad);
         List<ShopDetailDto> shopDetailDtoList = shopList.stream().map(this::shopToShopDetailDto).collect(Collectors.toList());
         return shopDetailDtoList;
+    }
+
+    @Override
+    public void registerMenuItem(Long shopId, Long menuId) throws NotFoundException {
+        //get menu item -- error if not avail
+        Menu menu = this.menuService.getMenuById(menuId);
+        //get shop for the given id-- error if not avail
+        Shop shop = this.getShopById(shopId);
+        //save current menuItem to shop
+        shop.setMenu(menu);
+        this.shopRepository.saveAndFlush(shop);
     }
 
     private ShopDetailDto shopToShopDetailDto(Shop shop) {
@@ -79,4 +94,6 @@ public class ShopServiceImpl implements ShopService {
         shop.setLon(shopDetailDto.getLon());
         shop.setLat(shopDetailDto.getLat());
     }
+
+
 }
